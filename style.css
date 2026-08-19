@@ -1,0 +1,439 @@
+/* ==========================================================================
+   FryDay 상세페이지 (Figma: Mobile - 상세페이지, 375 x 1895)
+   --------------------------------------------------------------------------
+   스케일링 방식
+   - 디자인 기준 폭 375px 에서 1rem = 10px 이 되도록 html font-size 를 뷰포트에 비례시킴.
+   - 모든 치수는 "디자인 px ÷ 10" rem 으로 작성 → 어떤 폰 폭에서도 비율이 동일하게 유지됨.
+   - 430px 이상(태블릿/PC)에서는 rem 을 고정하고 페이지를 가운데 정렬 → PC 에서도 같은 모습으로 보임.
+   ========================================================================== */
+
+:root {
+  --color-primary: #ff5b22;
+  --color-primary-light: #ff885f;
+  --color-bk: #141312;
+  --color-gr900: #4f4e4d;
+  --color-wt: #fafafa;
+  --page-width: 37.5rem; /* 375px */
+  --page-height: 189.5rem; /* 1895px */
+}
+
+html {
+  /* 375px 뷰포트에서 10px, 최대 11.4667px (= 430px 폭) */
+  font-size: min(calc(100vw / 37.5), 11.4667px);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  color: var(--color-bk);
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- 페이지 컨테이너 ---------- */
+.page {
+  position: relative;
+  width: var(--page-width);
+  height: var(--page-height);
+  margin: 0 auto;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+/* ---------- 배경 ---------- */
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.bg__arch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bg__arch--outer {
+  top: 24.7rem;
+  width: 44.7rem;
+  height: 269.3rem;
+  border-radius: 28.8rem 28.8rem 0 0;
+  background: rgba(255, 91, 34, 0.12);
+}
+
+.bg__arch--inner {
+  top: 45.1rem;
+  width: 37.3rem;
+  height: 224.4rem;
+  border-radius: 24rem 24rem 0 0;
+  background: rgba(255, 91, 34, 0.24);
+}
+
+.bg__gradient {
+  position: absolute;
+  left: 0;
+  top: 44.1rem;
+  width: 100%;
+  height: 212.3rem;
+  background: linear-gradient(to bottom, rgba(255, 91, 34, 0) 0%, var(--color-primary) 35%);
+}
+
+/* ---------- 히어로 ---------- */
+.hero {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__title {
+  position: absolute;
+  top: 7.5rem;
+  left: 0;
+  width: 100%;
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.072rem;
+  text-align: center;
+  color: var(--color-bk);
+  white-space: nowrap;
+}
+
+.hero__line {
+  display: block;
+}
+
+.hero__brand {
+  font-style: normal;
+  font-weight: 700;
+  background: linear-gradient(90deg, var(--color-primary) 72.935%, var(--color-primary-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero__desc {
+  position: absolute;
+  top: 15.9rem;
+  left: 0;
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.045rem;
+  text-align: center;
+  color: var(--color-gr900);
+  white-space: nowrap;
+}
+
+.hero__phones {
+  position: absolute;
+  top: 22.9rem;
+  left: 0;
+  width: 37.5rem;
+  height: auto;
+}
+
+.hero__character {
+  position: absolute;
+  top: 40.56rem;
+  left: 22.5rem;
+  width: 13.46rem;
+  height: 13.46rem;
+}
+
+/* CTA 버튼 */
+.cta {
+  position: absolute;
+  top: 57.27rem;
+  left: 2rem;
+  width: 33.5rem;
+  display: flex;
+  gap: 0.8rem;
+}
+
+.cta__btn {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem 2rem;
+  border-radius: 1.2rem;
+  background: var(--color-wt);
+  color: var(--color-bk);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cta__btn:hover {
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.4rem 1.2rem rgba(255, 91, 34, 0.18);
+}
+
+.cta__btn:active {
+  transform: translateY(0);
+}
+
+.cta__icon {
+  flex: 0 0 auto;
+}
+
+.cta__icon--apple {
+  width: 1.825rem;
+  height: 2.256rem;
+}
+
+.cta__icon--google {
+  width: 1.977rem;
+  height: 2.23rem;
+}
+
+.cta__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.cta__small {
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.4rem;
+}
+
+.cta__big {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.9rem;
+}
+
+/* ---------- 기능 소개 공통 ---------- */
+.feature {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.card {
+  position: absolute;
+  width: 29.44rem;
+  height: 11.5rem;
+  border-radius: 1.104rem;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.feature__text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 26rem;
+  color: var(--color-wt);
+}
+
+.feature__title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.feature__desc {
+  font-size: 1.4rem;
+  font-weight: 500; /* 디자이너 피드백 반영: Regular → Medium (가독성) */
+  line-height: 1.8;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+
+/* 기능 1: 커스텀 투두 */
+.card--custom {
+  top: 76.64rem;
+  left: 2rem;
+}
+
+.feature__screen {
+  position: absolute;
+  top: 72.5rem;
+  left: 4.76rem;
+  width: 24.38rem;
+  height: auto;
+}
+
+.feature__text--custom {
+  top: 89.3rem;
+  left: 2rem;
+}
+
+/* 기능 2: 월간 레포트 */
+.feature__report {
+  position: absolute;
+  top: 102.4rem;
+  left: 6.1rem;
+  width: 31.4rem;
+  height: auto;
+}
+
+.feature__text--report {
+  top: 117.6rem;
+  right: 2rem;
+  align-items: flex-end;
+  text-align: right;
+}
+
+/* 기능 3: 위젯 */
+.card--widget {
+  top: 133.9rem;
+  left: 2rem;
+}
+
+.feature__widget {
+  position: absolute;
+  height: auto;
+}
+
+.feature__widget--small {
+  top: 130.7rem;
+  left: 3.9rem;
+  width: 8.9rem;
+}
+
+.feature__widget--medium {
+  top: 134.7rem;
+  left: 14.6rem;
+  width: 18.9rem;
+}
+
+.feature__text--widget {
+  top: 146.6rem;
+  left: 2rem;
+}
+
+/* ---------- 마무리 문구 ---------- */
+.outro {
+  position: absolute;
+  top: 164.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: center;
+  color: var(--color-wt);
+  white-space: nowrap;
+}
+
+.outro__title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.8;
+}
+
+.outro__desc {
+  font-size: 1.4rem;
+  font-weight: 500; /* 디자이너 피드백 반영: Regular → Medium (가독성) */
+  line-height: 1.8;
+  opacity: 0.75;
+}
+
+/* ---------- 푸터 ---------- */
+.footer {
+  position: absolute;
+  bottom: 6.5rem;
+  left: 50%;
+  transform: translateX(calc(-50% + 0.05rem));
+  display: flex;
+  gap: 0.4rem;
+}
+
+.footer__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 7.2rem;
+}
+
+.footer__circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.2rem;
+  height: 5.2rem;
+  padding: 1rem;
+  border-radius: 999rem;
+  background: rgba(20, 19, 18, 0.75);
+  transition: background 0.15s ease;
+}
+
+.footer__btn:hover .footer__circle {
+  background: rgba(20, 19, 18, 0.9);
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.footer__logo--apple,
+.footer__logo--instagram {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+.footer__logo--google img {
+  width: 1.977rem;
+  height: 2.231rem;
+}
+
+.footer__logo--notion img {
+  width: 2.2rem;
+  height: 1.995rem;
+}
+
+.footer__label {
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.8;
+  text-align: center;
+  color: var(--color-wt);
+  white-space: nowrap;
+}
+
+/* ---------- 태블릿 / PC ---------- */
+@media (min-width: 768px) {
+  body {
+    background: #f4f2f0;
+    padding: 4rem 0;
+  }
+
+  .page {
+    border-radius: 2.4rem;
+    box-shadow: 0 2rem 6rem rgba(20, 19, 18, 0.12);
+  }
+}
