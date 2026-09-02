@@ -1,5 +1,5 @@
 /* ==========================================================================
-   FryDay 상세페이지 (Figma: Mobile - 상세페이지, 375 x 1895)
+   FryDay 상세페이지 (Figma: Mobile - 상세페이지, 375 x 1997)
    --------------------------------------------------------------------------
    스케일링 방식
    - 디자인 기준 폭 375px 에서 1rem = 10px 이 되도록 html font-size 를 뷰포트에 비례시킴.
@@ -14,7 +14,7 @@
   --color-gr900: #4f4e4d;
   --color-wt: #fafafa;
   --page-width: 37.5rem; /* 375px */
-  --page-height: 189.5rem; /* 1895px */
+  --page-height: 199.7rem; /* 1997px */
 }
 
 html {
@@ -282,21 +282,21 @@ a {
 }
 
 .feature__text--custom {
-  top: 89.3rem;
+  top: 89.34rem;
   left: 2rem;
 }
 
 /* 기능 2: 월간 레포트 */
 .feature__report {
   position: absolute;
-  top: 102.4rem;
+  top: 104.04rem;
   left: 6.1rem;
   width: 31.4rem;
   height: auto;
 }
 
 .feature__text--report {
-  top: 117.6rem;
+  top: 119.24rem;
   right: 2rem;
   align-items: flex-end;
   text-align: right;
@@ -304,7 +304,7 @@ a {
 
 /* 기능 3: 위젯 */
 .card--widget {
-  top: 133.9rem;
+  top: 137.14rem;
   left: 2rem;
 }
 
@@ -314,28 +314,40 @@ a {
 }
 
 .feature__widget--small {
-  top: 130.7rem;
+  top: 133.94rem;
   left: 3.9rem;
   width: 8.9rem;
 }
 
 .feature__widget--medium {
-  top: 134.7rem;
+  top: 137.94rem;
   left: 14.6rem;
   width: 18.9rem;
 }
 
 .feature__text--widget {
-  top: 146.6rem;
+  top: 149.84rem;
   left: 2rem;
 }
 
-/* ---------- 마무리 문구 ---------- */
-.outro {
+/* ---------- 하단 반투명 박스 (마무리 문구 + 푸터) ---------- */
+.bottom-box {
   position: absolute;
-  top: 164.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 167.74rem;
+  left: 2rem;
+  width: 33.5rem;
+  height: 23.3rem;
+  padding: 2.4rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+  border-radius: 1.6rem;
+  background: rgba(250, 250, 250, 0.25);
+}
+
+/* 마무리 문구 */
+.outro {
   width: 22.3rem;
   display: flex;
   flex-direction: column;
@@ -360,12 +372,10 @@ a {
 
 /* ---------- 푸터 ---------- */
 .footer {
-  position: absolute;
-  bottom: 6.5rem;
-  left: 50%;
-  transform: translateX(calc(-50% + 0.05rem));
   display: flex;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
 }
 
 .footer__btn {
@@ -373,7 +383,7 @@ a {
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
-  width: 7.2rem;
+  width: 7.6rem;
 }
 
 .footer__circle {
