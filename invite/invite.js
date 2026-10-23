@@ -58,11 +58,16 @@ function detectInAppBrowser() {
 function showInviteCode(code) {
   elements.codeValue.textContent = code;
   elements.codeSection.hidden = false;
+  elements.copyBtn.addEventListener("click", () => copyCode(code));
+}
 
+/**
+ * 일반 브라우저에서는 앱이 있으면 OS 가 이미 앱을 열었으므로, 여기까지 왔다면 앱이 없다는 뜻이다.
+ * 이때 앱 스킴 버튼은 "주소가 유효하지 않음" 오류만 내므로 인앱 브라우저에서만 보여준다.
+ */
+function showOpenAppButton(code) {
   elements.openAppBtn.href = APP_SCHEME_URL + encodeURIComponent(code);
   elements.openAppBtn.hidden = false;
-
-  elements.copyBtn.addEventListener("click", () => copyCode(code));
 }
 
 async function copyCode(code) {
@@ -129,7 +134,8 @@ function setUpInAppBrowserNotice(inAppBrowser, platform) {
  * Android 는 Chrome 을 직접 지정하는 intent 가 더 확실하고, iOS 는 카카오 스킴만 쓸 수 있다.
  */
 function openInExternalBrowser() {
-  const currentUrl = window.location.href;
+  // #fragment 가 남으면 Android intent 문자열에 # 이 두 번 들어가 깨진다.
+  const currentUrl = window.location.origin + window.location.pathname + window.location.search;
 
   if (detectPlatform() === "android") {
     const withoutScheme = currentUrl.replace(/^https?:\/\//, "");
@@ -150,6 +156,9 @@ function initialize() {
   if (code) {
     showInviteCode(code);
     elements.installHint.hidden = false;
+  }
+  if (code && inAppBrowser) {
+    showOpenAppButton(code);
   }
 
   orderStoreButtons(platform);
