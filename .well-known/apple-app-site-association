@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["4378PR9BBA.com.crispycrew.fryday"],
+        "components": [
+          {
+            "/": "/invite*",
+            "comment": "그룹 초대 링크"
+          }
+        ]
+      }
+    ]
+  }
+}
