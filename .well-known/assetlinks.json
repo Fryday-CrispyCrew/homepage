@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.crispycrew.fryday",
+      "sha256_cert_fingerprints": [
+        "A3:EA:7D:A8:96:35:C8:93:A6:02:D6:7D:89:2E:81:BB:55:CF:A5:85:48:E7:07:64:15:DA:BF:3E:7D:A7:90:FC"
+      ]
+    }
+  }
+]
