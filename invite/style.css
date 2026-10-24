@@ -77,6 +77,13 @@ body {
 
 .invite__line {
   display: block;
+  word-break: keep-all;
+}
+
+.invite__name {
+  unicode-bidi: isolate;
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
 .invite__desc {
@@ -144,6 +151,12 @@ body {
 
 .actions__app:active {
   background: var(--color-primary-dark);
+}
+
+.actions__hint {
+  margin-top: -4px;
+  font-size: 13px;
+  color: var(--color-gr500);
 }
 
 .actions__stores {
