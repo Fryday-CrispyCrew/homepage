@@ -4,13 +4,16 @@
  * 앱이 설치돼 있으면 OS 가 App Links / Universal Links 로 이 페이지를 건너뛰고 앱을 연다.
  * 따라서 이 스크립트가 도는 상황은 둘 중 하나다.
  *   ① 앱이 없다            → 스토어로 보낸다
- *   ② 인앱 브라우저로 열렸다 → OS 가 링크를 가로채지 못했으므로 직접 열어줘야 한다
+ *   ② 인앱 브라우저로 열렸다 → OS 가 링크를 가로채지 못했으므로 직접 열어줘야 한다.
+ *                             카카오톡이면 페이지가 열리자마자 자동으로 앱을 띄운다.
  */
 
 const INVITE_CODE_LENGTH = 6;
 // 서버의 그룹명 최대 길이(FryGroup.MAX_NAME_LENGTH). 넘는 값은 손으로 조작된 링크로 보고 무시한다.
 const GROUP_NAME_MAX_LENGTH = 10;
 const APP_SCHEME_URL = "fryday://group/join?code=";
+const AUTO_OPEN_TRIED_PARAM = "opened";
+const FROM_KAKAO_PARAM = "from";
 
 const elements = {
   titleFirstLine: document.getElementById("titleFirstLine"),
@@ -19,6 +22,7 @@ const elements = {
   codeValue: document.getElementById("codeValue"),
   copyBtn: document.getElementById("copyBtn"),
   openAppBtn: document.getElementById("openAppBtn"),
+  openAppHint: document.getElementById("openAppHint"),
   installHint: document.getElementById("installHint"),
   inAppNotice: document.getElementById("inAppNotice"),
   inAppNoticeText: document.getElementById("inAppNoticeText"),
@@ -144,8 +148,9 @@ function setUpInAppBrowserNotice(inAppBrowser, platform) {
   elements.inAppNotice.hidden = false;
 
   if (inAppBrowser === "kakaotalk") {
+    // 자동 실행이 실패했거나 앱이 없을 때만 이 화면에 남게 된다.
     elements.inAppNoticeText.textContent =
-      "카카오톡 안에서는 앱이 바로 열리지 않아요";
+      "앱이 열리지 않았다면 외부 브라우저로 열어주세요";
     elements.openExternalBtn.hidden = false;
     elements.openExternalBtn.addEventListener("click", openInExternalBrowser);
     return;
@@ -176,11 +181,46 @@ function openInExternalBrowser() {
     "kakaotalk://web/openExternal?url=" + encodeURIComponent(currentUrl);
 }
 
+function currentLandingUrlWith(param, value) {
+  const url = new URL(window.location.origin + window.location.pathname + window.location.search);
+  url.searchParams.set(param, value);
+  return url.toString();
+}
+
+/**
+ * 카카오톡 인앱 브라우저는 앱 링크를 OS 에 넘기지 않으므로, 페이지가 열리자마자 직접 앱을 띄운다.
+ * Android: 패키지를 지정한 intent 로 앱을 바로 연다. 앱이 없으면 fallback 으로 이 페이지에 돌아온다.
+ * iOS: 카카오 스킴으로 Safari 에 넘긴다. 이때 iOS 가 Universal Link 로 앱을 연다.
+ */
+function openAppFromKakao(code, platform) {
+  if (platform === "android") {
+    const fallbackUrl = currentLandingUrlWith(AUTO_OPEN_TRIED_PARAM, "1");
+    window.location.replace(
+      "intent://group/join?code=" + encodeURIComponent(code) +
+      "#Intent;scheme=fryday;package=com.crispycrew.fryday;" +
+      "S.browser_fallback_url=" + encodeURIComponent(fallbackUrl) + ";end",
+    );
+    return;
+  }
+
+  if (platform === "ios") {
+    window.location.replace(
+      "kakaotalk://web/openExternal?url=" +
+        encodeURIComponent(currentLandingUrlWith(FROM_KAKAO_PARAM, "kakao")),
+    );
+  }
+}
+
 function initialize() {
+  const params = new URLSearchParams(window.location.search);
   const code = readInviteCode();
   const groupName = readGroupName();
   const platform = detectPlatform();
   const inAppBrowser = detectInAppBrowser();
+  // iOS 는 카카오톡에서 Safari 로 넘어온 뒤에도 앱이 안 열릴 수 있어, 그때도 수동 버튼을 남긴다.
+  const cameFromKakao = params.get(FROM_KAKAO_PARAM) === "kakao";
+  // Android fallback 으로 돌아온 페이지에서 또 자동 실행하면 무한 반복된다.
+  const autoOpenTried = params.get(AUTO_OPEN_TRIED_PARAM) === "1";
 
   // 코드 없이 이름만 있는 링크로 공식 안내처럼 꾸미지 못하게, 유효한 초대일 때만 이름을 보여준다.
   if (code && groupName) {
@@ -190,12 +230,19 @@ function initialize() {
     showInviteCode(code);
     elements.installHint.hidden = false;
   }
-  if (code && inAppBrowser) {
+  if (code && (inAppBrowser || cameFromKakao)) {
     showOpenAppButton(code);
+  }
+  if (code && cameFromKakao) {
+    elements.openAppHint.hidden = false;
   }
 
   orderStoreButtons(platform);
   setUpInAppBrowserNotice(inAppBrowser, platform);
+
+  if (code && inAppBrowser === "kakaotalk" && !autoOpenTried) {
+    openAppFromKakao(code, platform);
+  }
 }
 
 initialize();

@@ -153,6 +153,12 @@ body {
   background: var(--color-primary-dark);
 }
 
+.actions__hint {
+  margin-top: -4px;
+  font-size: 13px;
+  color: var(--color-gr500);
+}
+
 .actions__stores {
   display: flex;
   gap: 12px;
