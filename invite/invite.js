@@ -8,9 +8,13 @@
  */
 
 const INVITE_CODE_LENGTH = 6;
+// 서버의 그룹명 최대 길이(FryGroup.MAX_NAME_LENGTH). 넘는 값은 손으로 조작된 링크로 보고 무시한다.
+const GROUP_NAME_MAX_LENGTH = 10;
 const APP_SCHEME_URL = "fryday://group/join?code=";
 
 const elements = {
+  titleFirstLine: document.getElementById("titleFirstLine"),
+  titleSecondLine: document.getElementById("titleSecondLine"),
   codeSection: document.getElementById("codeSection"),
   codeValue: document.getElementById("codeValue"),
   copyBtn: document.getElementById("copyBtn"),
@@ -30,6 +34,30 @@ function readInviteCode() {
   const normalized = raw.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
 
   return normalized.length === INVITE_CODE_LENGTH ? normalized : null;
+}
+
+/**
+ * 앱이 공유할 때 링크에 실어 보낸 그룹명. 이전 버전 앱이 만든 링크에는 없다.
+ * 누구나 링크를 고쳐 쓸 수 있는 값이라 화면 표시에만 쓰고, 실제 참여는 앱이 서버 값으로 다시 확인한다.
+ */
+function readGroupName() {
+  const raw = new URLSearchParams(window.location.search).get("name") ?? "";
+  // 제어 문자와 보이지 않는 서식 문자(폭 0 공백, 글자 방향 전환 등)는 이름을 위장하는 데 쓰일 수 있어 지운다.
+  const name = raw.replace(/[\p{Cc}\p{Cf}]/gu, "").replace(/\s+/g, " ").trim();
+
+  if (!name || name.length > GROUP_NAME_MAX_LENGTH) return null;
+  return name;
+}
+
+function showGroupName(name) {
+  const highlighted = document.createElement("strong");
+  highlighted.className = "invite__name";
+  highlighted.textContent = name;
+
+  elements.titleFirstLine.textContent = "FryDay ";
+  elements.titleFirstLine.append(highlighted);
+  elements.titleSecondLine.textContent = "그룹에 초대받았어요!";
+  document.title = `FryDay ${name} 그룹 초대`;
 }
 
 function detectPlatform() {
@@ -150,9 +178,14 @@ function openInExternalBrowser() {
 
 function initialize() {
   const code = readInviteCode();
+  const groupName = readGroupName();
   const platform = detectPlatform();
   const inAppBrowser = detectInAppBrowser();
 
+  // 코드 없이 이름만 있는 링크로 공식 안내처럼 꾸미지 못하게, 유효한 초대일 때만 이름을 보여준다.
+  if (code && groupName) {
+    showGroupName(groupName);
+  }
   if (code) {
     showInviteCode(code);
     elements.installHint.hidden = false;
